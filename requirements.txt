@@ -1,0 +1,7 @@
+numpy
+librosa
+scikit-learn
+music21
+matplotlib 
+pretty_midi
+tensorflow
