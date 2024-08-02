@@ -19,3 +19,4 @@ def crear_modelo(input_shape):
 # Entrenar el modelo
 modelo = crear_modelo((X.shape[1],))
 modelo.fit(X, y_labels, epochs=50, batch_size=32, validation_split=0.2)
+
