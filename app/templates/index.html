@@ -18,6 +18,15 @@
 
       <main>
         <form method="POST" enctype="multipart/form-data" action="/transcribir">
+          <!-- Selector de modelos -->
+          <label for="model">Seleccionar modelo de transcripción:</label>
+          <select id="model" name="model">
+            <option value="maestro">Onsets & Frames (MAESTRO)</option>
+            <option value="basic_pitch">Basic Pitch</option>
+          </select>
+          <br /><br />
+
+          <!-- Entrada para enlace de YouTube -->
           <div class="form-group">
             <label for="youtube_url">Ingresa un enlace de YouTube:</label>
             <input

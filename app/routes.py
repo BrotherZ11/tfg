@@ -2,15 +2,14 @@
 from flask import Flask, render_template, Blueprint, request,redirect, url_for, send_file
 from .utils.download import download_audio
 from .utils.preprocess import convert_to_wav
-from .utils.transcribe_v import transcribe_audio_to_midi
-from .utils.generate import convert_midi_to_pdf
+from .utils.generate_score import convert_midi_to_pdf_with_musescore
 import os
 
 main = Blueprint('main', __name__)
 
 # Directorios de archivos
 UPLOAD_FOLDER = 'uploads/'
-MIDI_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'midi/')  # Ruta absoluta
+MIDI_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'midi/') 
 PDF_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'pdf/')
 
 @main.route("/")
@@ -37,12 +36,27 @@ def transcribir():
     else:
         return "Error al descargar el archivo de YouTube", 500
     
-    # Realizar la transcripción
-    midi_path= transcribe_audio_to_midi(wav_path,MIDI_FOLDER)    
+     # Obtener el modelo seleccionado
+    selected_model = request.form.get('model', 'maestro')
+
+    # Realizar la transcripción según el modelo seleccionado
+    try:
+        if selected_model == 'maestro':
+            from .utils.transcribe_v import transcribe_audio_to_midi
+            midi_path = transcribe_audio_to_midi(wav_path, MIDI_FOLDER)
+        elif selected_model == 'basic_pitch':
+            from .utils.basic import transcribe_with_basic_pitch
+            print("entro")
+            midi_path = transcribe_with_basic_pitch(wav_path, MIDI_FOLDER)
+        else:
+            return "Modelo no válido seleccionado", 400
+    except Exception as e:
+        return f"Error durante la transcripción: {str(e)}", 500   
 
      # Redirigir al formulario inicial con el enlace al archivo MIDI, si existe
     if midi_path:
-        pdf_path = convert_midi_to_pdf(midi_path, PDF_FOLDER)
+        #clean_path = clean_midi_file(midi_path, CLEAN_FOLDER )  # Limpiar archivo MIDI temporal
+        pdf_path = convert_midi_to_pdf_with_musescore(midi_path, PDF_FOLDER)
         return render_template('index.html', midi_file=os.path.basename(midi_path), pdf_file=os.path.basename(pdf_path))
     else:
         return redirect(url_for("main.index"))
