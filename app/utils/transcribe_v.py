@@ -14,7 +14,7 @@ from magenta.models.onsets_frames_transcription import train_util
 # Desactivar las características de TensorFlow 2 (ya que usamos TensorFlow 1)
 tf.disable_v2_behavior()
 
-def transcribe_audio_to_midi(wav_path, output_dir):
+def transcribe_with_onsets_and_frames(wav_path, output_dir):
     # Paso 1: Inicialización del modelo MAESTRO y carga del checkpoint
     checkpoint_dir = './train'  # Asegúrate de que tus checkpoints están aquí
 
@@ -108,7 +108,7 @@ def clean_midi(sequence):
     
     for note in sequence.notes:
         # Filtrar silencios o notas con duraciones muy pequeñas
-        if note.end_time - note.start_time > 0.05:  # Ajustar este umbral según sea necesario
+        if note.end_time - note.start_time > 0.05 and note.start_time >= 0 and note.end_time >= 0:  # Ajustar este umbral según sea necesario
             cleaned_sequence.notes.add().CopyFrom(note)
     
     return cleaned_sequence

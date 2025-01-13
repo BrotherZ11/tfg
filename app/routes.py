@@ -3,6 +3,7 @@ from flask import Flask, render_template, Blueprint, request,redirect, url_for, 
 from .utils.download import download_audio
 from .utils.preprocess import convert_to_wav
 from .utils.generate_score import convert_midi_to_pdf_with_musescore
+from .utils.clean import clean_midi
 import os
 
 main = Blueprint('main', __name__)
@@ -41,9 +42,9 @@ def transcribir():
 
     # Realizar la transcripción según el modelo seleccionado
     try:
-        if selected_model == 'maestro':
-            from .utils.transcribe_v import transcribe_audio_to_midi
-            midi_path = transcribe_audio_to_midi(wav_path, MIDI_FOLDER)
+        if selected_model == 'onsets_and_frames':
+            from .utils.transcribe_v import transcribe_with_onsets_and_frames
+            midi_path = transcribe_with_onsets_and_frames(wav_path, MIDI_FOLDER)
         elif selected_model == 'basic_pitch':
             from .utils.basic import transcribe_with_basic_pitch
             print("entro")
@@ -55,9 +56,10 @@ def transcribir():
 
      # Redirigir al formulario inicial con el enlace al archivo MIDI, si existe
     if midi_path:
-        #clean_path = clean_midi_file(midi_path, CLEAN_FOLDER )  # Limpiar archivo MIDI temporal
-        pdf_path = convert_midi_to_pdf_with_musescore(midi_path, PDF_FOLDER)
-        return render_template('index.html', midi_file=os.path.basename(midi_path), pdf_file=os.path.basename(pdf_path))
+         # Limpiar MIDI antes de la conversión
+        cleaned_midi_path = clean_midi(midi_path)
+        pdf_path = convert_midi_to_pdf_with_musescore(cleaned_midi_path, PDF_FOLDER)
+        return render_template('index.html', midi_file=os.path.basename(cleaned_midi_path), pdf_file=os.path.basename(pdf_path))
     else:
         return redirect(url_for("main.index"))
     
