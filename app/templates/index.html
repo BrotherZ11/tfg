@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Transcription App</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Generador de Partituras</h1>
+        <p>Convierte tus canciones en partituras fácilmente.</p>
+      </header>
+
+      <main>
+        <form method="POST" enctype="multipart/form-data" action="/transcribir">
+          <!-- Selector de modelos -->
+          <label for="model">Seleccionar modelo de transcripción:</label>
+          <select id="model" name="model">
+            <option value="onsets_and_frames">Onsets & Frames (MAESTRO)</option>
+            <option value="basic_pitch">Basic Pitch</option>
+          </select>
+          <br /><br />
+
+          <!-- Entrada para enlace de YouTube -->
+          <div class="form-group">
+            <label for="youtube_url">Ingresa un enlace de YouTube:</label>
+            <input
+              type="url"
+              id="youtube_url"
+              name="youtube_url"
+              placeholder="https://www.youtube.com/..."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="audio_file"
+              >O carga un archivo de audio (MP3 o WAV):</label
+            >
+            <input
+              type="file"
+              id="audio_file"
+              name="audio_file"
+              accept=".mp3,.wav"
+            />
+          </div>
+
+          <button type="submit" class="btn-primary">Procesar Canción</button>
+        </form>
+
+        <!-- Mostrar el enlace de descarga si el archivo MIDI ha sido creado -->
+        {% if midi_file %}
+        <div class="result">
+          <p>
+            Transcripción completada.
+            <a href="/download/{{ midi_file }}" class="btn-link"
+              >Descargar archivo MIDI</a
+            >
+          </p>
+        </div>
+        {% endif %}
+
+        <!-- Mostrar el PDF si ha sido creado -->
+        {% if pdf_file %}
+        <div class="result">
+          <h2>Partitura Generada:</h2>
+          <embed
+            src="/view_pdf/{{ pdf_file }}"
+            type="application/pdf"
+            width="100%"
+            height="600"
+          />
+          <div class="result-links">
+            <a href="/view_pdf/{{ pdf_file }}" target="_blank" class="btn-link"
+              >Ver archivo PDF</a
+            >
+            <a href="/view_pdf/{{ pdf_file }}" download class="btn-link"
+              >Descargar archivo PDF</a
+            >
+          </div>
+        </div>
+        {% endif %}
+      </main>
+
+      <footer>
+        <p>
+          &copy; 2024 Generador de Partituras. Todos los derechos reservados.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
