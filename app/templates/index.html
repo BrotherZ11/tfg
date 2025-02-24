@@ -10,6 +10,16 @@
     />
   </head>
   <body>
+    ç</div>
+    <!-- Mostrar mensajes de estado -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="messages">
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
     <div class="container">
       <header>
         <h1>Generador de Partituras</h1>
@@ -23,6 +33,7 @@
           <select id="model" name="model">
             <option value="onsets_and_frames">Onsets & Frames (MAESTRO)</option>
             <option value="basic_pitch">Basic Pitch</option>
+            <option value="transkun">Transkun</option>
           </select>
           <br /><br />
 
@@ -91,6 +102,6 @@
           &copy; 2024 Generador de Partituras. Todos los derechos reservados.
         </p>
       </footer>
-    </div>
+    
   </body>
 </html>

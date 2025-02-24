@@ -70,7 +70,6 @@ dependencies:
       - libclang==18.1.1
       - librosa==0.8.0
       - llvmlite==0.40.1
-      - magenta==2.1.4
       - markdown==3.7
       - markupsafe==2.1.5
       - matplotlib==3.5.2
