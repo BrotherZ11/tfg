@@ -1,7 +1,9 @@
+import tensorflow._api.v2.compat.v1 as tf
 from basic_pitch.inference import predict_and_save
 from basic_pitch import ICASSP_2022_MODEL_PATH
 import os
 
+tf.enable_v2_behavior()
 def transcribe_with_basic_pitch(audio_path, output_dir):
     """
     Transcribe audio to MIDI using Basic Pitch.

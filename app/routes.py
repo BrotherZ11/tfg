@@ -11,8 +11,14 @@ main = Blueprint('main', __name__)
 
 # Directorios de archivos
 UPLOAD_FOLDER = 'uploads/'
-MIDI_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'midi/') 
-PDF_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'pdf/')
+OUTPUT_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'output/')
+MIDI_FOLDER = os.path.join(OUTPUT_FOLDER, 'midi/')
+PDF_FOLDER = os.path.join(OUTPUT_FOLDER, 'pdf/')
+
+# Asegurar que las carpetas existen
+for model in ['onsets_and_frames', 'basic_pitch', 'transkun']:
+    os.makedirs(os.path.join(MIDI_FOLDER, model), exist_ok=True)
+    os.makedirs(os.path.join(PDF_FOLDER, model), exist_ok=True)
 
 @main.route("/")
 def index():
@@ -48,18 +54,21 @@ def transcribir():
         
         # Obtener el modelo seleccionado
         selected_model = request.form.get('model', 'maestro')
+        flash(f"Modelo: {selected_model}", "success")
 
+        midi_output_folder = os.path.join(MIDI_FOLDER, selected_model)
+        pdf_output_folder = os.path.join(PDF_FOLDER, selected_model)
         # Realizar la transcripción según el modelo seleccionado
         try:
             if selected_model == 'onsets_and_frames':
                 from .models.transcribe_v import transcribe_with_onsets_and_frames
-                midi_path = transcribe_with_onsets_and_frames(wav_path, MIDI_FOLDER)
+                midi_path = transcribe_with_onsets_and_frames(wav_path, midi_output_folder)
             elif selected_model == 'basic_pitch':
                 from .models.basic import transcribe_with_basic_pitch
-                midi_path = transcribe_with_basic_pitch(wav_path, MIDI_FOLDER)
+                midi_path = transcribe_with_basic_pitch(wav_path, midi_output_folder)
             elif selected_model == 'transkun':
                 from .models.transkun import transcribe_with_transkun
-                midi_path = transcribe_with_transkun(wav_path, MIDI_FOLDER)
+                midi_path = transcribe_with_transkun(wav_path, midi_output_folder)
             else:
                 flash("Modelo de transcripción no válido.", "error")
                 return redirect(url_for("main.index"))
@@ -74,33 +83,32 @@ def transcribir():
         try:
             # Limpiar MIDI antes de la conversión
             # cleaned_midi_path = clean_midi(midi_path)
-            pdf_path = convert_midi_to_pdf_with_musescore(midi_path, PDF_FOLDER)
+            pdf_path = convert_midi_to_pdf_with_musescore(midi_path, pdf_output_folder)
             flash(f"Partitura generada: {pdf_path}", "success")
         except Exception as e:
                 flash(f"Error al generar la partitura: {str(e)}", "error")
                 print(traceback.format_exc())
                 return redirect(url_for("main.index"))
-        return render_template('index.html', midi_file=os.path.basename(midi_path), pdf_file=os.path.basename(pdf_path))
+        return render_template('index.html', model=selected_model, midi_file=os.path.basename(midi_path), pdf_file=os.path.basename(pdf_path))
 
     except Exception as e:
         flash(f"Error general en la transcripción: {str(e)}", "error")
         print(traceback.format_exc())
         return redirect(url_for("main.index"))
 
-@main.route('/download/<filename>')
-def download_file(filename):
+@main.route('/download/<model>/<filename>')
+def download_file(model, filename):
     try:
-        path = os.path.join(MIDI_FOLDER, filename)
+        path = os.path.join(MIDI_FOLDER, model, filename)
         return send_file(path, as_attachment=True)
     except Exception as e:
         flash(f"Error al descargar el archivo: {str(e)}", "error")
         return redirect(url_for("main.index"))
 
-
-@main.route('/view_pdf/<filename>')
-def view_pdf(filename):
+@main.route('/view_pdf/<model>/<filename>')
+def view_pdf(model, filename):
     try:
-        path = os.path.join(PDF_FOLDER, filename)
+        path = os.path.join(PDF_FOLDER, model, filename)
         return send_file(path)
     except Exception as e:
         flash(f"Error al visualizar el PDF: {str(e)}", "error")

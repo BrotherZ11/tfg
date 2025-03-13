@@ -10,7 +10,6 @@
     />
   </head>
   <body>
-    ç</div>
     <!-- Mostrar mensajes de estado -->
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %}
@@ -68,7 +67,7 @@
         <div class="result">
           <p>
             Transcripción completada.
-            <a href="/download/{{ midi_file }}" class="btn-link"
+            <a href="/download/{{ model }}/{{ midi_file }}" class="btn-link"
               >Descargar archivo MIDI</a
             >
           </p>
@@ -80,16 +79,16 @@
         <div class="result">
           <h2>Partitura Generada:</h2>
           <embed
-            src="/view_pdf/{{ pdf_file }}"
+            src="/view_pdf/{{ model }}/{{ pdf_file }}"
             type="application/pdf"
             width="100%"
             height="600"
           />
           <div class="result-links">
-            <a href="/view_pdf/{{ pdf_file }}" target="_blank" class="btn-link"
+            <a href="/view_pdf/{{ model }}/{{ pdf_file }}" target="_blank" class="btn-link"
               >Ver archivo PDF</a
             >
-            <a href="/view_pdf/{{ pdf_file }}" download class="btn-link"
+            <a href="/view_pdf/{{ model }}/{{ pdf_file }}" download class="btn-link"
               >Descargar archivo PDF</a
             >
           </div>

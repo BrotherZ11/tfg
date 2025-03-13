@@ -4,6 +4,7 @@ import os
 def convert_to_wav(input_audio_path):
     if os.path.exists(input_audio_path):
         sound = AudioSegment.from_mp3(input_audio_path)
+        sound = sound.set_frame_rate(16000).set_channels(1)
         wav_path = input_audio_path.replace(".mp3", ".wav")
         sound.export(wav_path, format="wav")
         return wav_path
