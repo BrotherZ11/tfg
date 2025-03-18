@@ -2,6 +2,8 @@
 import numpy as np
 import mir_eval
 import pretty_midi
+import librosa
+import librosa.display
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -99,10 +101,10 @@ def plot_piano_roll(pitches, onsets, offsets, title="Piano Roll"):
     plt.show()
     
 # Rutas a los archivos MIDI
-reference_file = 'output/midi/ground_truth/prueba.mid'
-onset_frame_file = 'output/midi/onsets_and_frames/prueba.mid'
-basic_pitch_file = 'output/midi/basic_pitch/prueba.mid'
-transkun_file = 'output/midi/transkun/prueba.mid'
+reference_file = 'output/midi/ground_truth/pachelbel-canon-in-d.mid'
+onset_frame_file = 'output/midi/onsets_and_frames/pachelbel-canon-in-d.mid'
+basic_pitch_file = 'output/midi/basic_pitch/pachelbel-canon-in-d_basic_pitch.mid'
+transkun_file = 'output/midi/transkun/pachelbel-canon-in-d_transkun.mid'
 # Evaluar cada modelo
 # Calcula métricas
 models = {
@@ -137,12 +139,6 @@ plt.legend(title='Metrics', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
 plt.show()
 
-# Gráfico para Average Overlap Ratio
-df['Average Overlap Ratio'].plot(kind='bar', figsize=(8, 5), title='Average Overlap Ratio', color='teal')
-plt.ylabel('Score')
-plt.xlabel('Models')
-plt.tight_layout()
-plt.show()
 
 # Radar plot
 labels = np.array(metrics + ['Overlap Precision', 'Overlap Recall', 'Overlap F1'])
