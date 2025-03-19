@@ -128,6 +128,8 @@ def plot_pypianoroll(midi_paths, titles, figsize=(20, 6)):
 
         # Añadir título
         axes[i].set_title(title, fontsize=12)
+        axes[i].set_xlabel("")
+        axes[i].set_ylabel("")
 
     plt.tight_layout()
     plt.show()
@@ -152,17 +154,19 @@ def plot_pypianoroll_separate(midi_paths, titles, figsize=(20, 6)):
 
         # Personalizar título
         ax.set_title(title, fontsize=16, pad=10)
-
+        ax.set_xlabel("")
+        ax.set_ylabel("")
+        ax.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
         plt.tight_layout()
         plt.show()
 
 
 
 # Rutas a los archivos MIDI
-reference_file = 'output/midi/ground_truth/Greensleeves_Guitar_Easy.mid'
-onset_frame_file = 'output/midi/onsets_and_frames/Greensleeves_Guitar_Easy.mid'
-basic_pitch_file = 'output/midi/basic_pitch/Greensleeves_Guitar_Easy_basic_pitch.mid'
-transkun_file = 'output/midi/transkun/Greensleeves_Guitar_Easy.mid'
+reference_file = 'output/midi/ground_truth/MIDI-Unprocessed_041_PIANO041_MID--AUDIO-split_07-06-17_Piano-e_1-01_wav--1.midi'
+onset_frame_file = 'output/midi/onsets_and_frames/MIDI-Unprocessed_041_PIANO041_MID--AUDIO-split_07-06-17_Piano-e_1-01_wav--1.mid'
+basic_pitch_file = 'output/midi/basic_pitch/MIDI-Unprocessed_041_PIANO041_MID--AUDIO-split_07-06-17_Piano-e_1-01_wav--1_basic_pitch.mid'
+transkun_file = 'output/midi/transkun/MIDI-Unprocessed_041_PIANO041_MID--AUDIO-split_07-06-17_Piano-e_1-01_wav--1_transkun.mid'
 # Evaluar cada modelo
 # Calcula métricas
 models = {
@@ -193,7 +197,7 @@ titles = [
 ]
 
 # Llama a la función para visualizar todo
-plot_pypianoroll(midi_files, titles)
+plot_pypianoroll_separate(midi_files, titles)
 
 
 # Visualización de los resultados
