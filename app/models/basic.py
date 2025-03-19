@@ -14,7 +14,7 @@ def transcribe_with_basic_pitch(audio_path, output_dir):
         str: Path to the output MIDI file.
     """
     # Nombre del archivo MIDI de salida
-    midi_path = os.path.join(output_dir, os.path.basename(audio_path).replace(".wav", "_basic_pitch.mid"))
+    midi_path = os.path.join(output_dir, os.path.basename(audio_path).replace(".wav", ".mid"))
 
     # Ejecutar la transcripción y guardar los archivos necesarios
     predict_and_save(

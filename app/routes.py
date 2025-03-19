@@ -62,6 +62,7 @@ def transcribir():
         try:
             if selected_model == 'onsets_and_frames':
                 from .models.transcribe_v import transcribe_with_onsets_and_frames
+                #from .models.onset_and_frames import transcribe_with_onset_and_frame
                 midi_path = transcribe_with_onsets_and_frames(wav_path, midi_output_folder)
             elif selected_model == 'basic_pitch':
                 from .models.basic import transcribe_with_basic_pitch

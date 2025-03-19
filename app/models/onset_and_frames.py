@@ -1,13 +1,14 @@
 import subprocess
 import os
 
-def transcribe_with_transkun(audio_path, output_dir):
+def transcribe_with_onset_and_frame(audio_path, output_dir, model_dir):
     """
-    Usa Transkun para convertir un archivo de audio a MIDI.
+    Usa el modelo Onset and Frames para convertir un archivo de audio a MIDI.
     
     Args:
         audio_path (str): Ruta del archivo de audio (.wav o .mp3).
         output_dir (str): Directorio donde se guardará el MIDI.
+        model_dir (str): Directorio que contiene el checkpoint del modelo.
     
     Returns:
         str: Ruta del archivo MIDI generado.
@@ -16,9 +17,13 @@ def transcribe_with_transkun(audio_path, output_dir):
     midi_path = os.path.join(output_dir, midi_filename)
 
     try:
-        # Ejecutar el comando Transkun
-        subprocess.run(["transkun", audio_path, midi_path], check=True)
+        # Ejecutar el comando Onset and Frames
+        subprocess.run([
+            "onsets_frames_transcription_transcribe",
+            f"--model_dir={model_dir}",
+            audio_path
+        ], check=True)
         return midi_path
     except subprocess.CalledProcessError as e:
-        print(f"Error al ejecutar Transkun: {e}")
+        print(f"Error al ejecutar Onset and Frames: {e}")
         return None
