@@ -9,6 +9,7 @@
       href="{{ url_for('static', filename='style.css') }}"
     />
   </head>
+
   <body>
     <!-- Mostrar mensajes de estado -->
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
@@ -60,6 +61,17 @@
           </div>
 
           <button type="submit" class="btn-primary">Procesar Canción</button>
+          <div
+            id="loading"
+            style="display: none; text-align: center; margin-top: 20px"
+          >
+            <img
+              src="{{ url_for('static', filename='loading.gif') }}"
+              alt="Cargando..."
+              width="50"
+            />
+            <p>Transcribiendo, espere por favor...</p>
+          </div>
         </form>
 
         <!-- Mostrar el enlace de descarga si el archivo MIDI ha sido creado -->
@@ -85,10 +97,16 @@
             height="600"
           />
           <div class="result-links">
-            <a href="/view_pdf/{{ model }}/{{ pdf_file }}" target="_blank" class="btn-link"
+            <a
+              href="/view_pdf/{{ model }}/{{ pdf_file }}"
+              target="_blank"
+              class="btn-link"
               >Ver archivo PDF</a
             >
-            <a href="/view_pdf/{{ model }}/{{ pdf_file }}" download class="btn-link"
+            <a
+              href="/view_pdf/{{ model }}/{{ pdf_file }}"
+              download
+              class="btn-link"
               >Descargar archivo PDF</a
             >
           </div>
@@ -101,6 +119,11 @@
           &copy; 2024 Generador de Partituras. Todos los derechos reservados.
         </p>
       </footer>
-    
+    </div>
+    <script>
+      document.querySelector("form").addEventListener("submit", function () {
+        document.getElementById("loading").style.display = "block"; // Mostrar el cargador
+      });
+    </script>
   </body>
 </html>

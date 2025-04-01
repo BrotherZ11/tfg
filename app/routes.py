@@ -70,7 +70,6 @@ def transcribir():
 
         # Obtener el modelo seleccionado
         selected_model = request.form.get('model', 'maestro')
-        flash(f"Modelo seleccionado: {selected_model}", "success")
 
         midi_output_folder = os.path.join(MIDI_FOLDER, selected_model)
         pdf_output_folder = os.path.join(PDF_FOLDER, selected_model)
@@ -95,6 +94,7 @@ def transcribir():
             print(traceback.format_exc())
             return redirect(url_for("main.index"))
 
+        flash("Proceso finalizado con éxito", "success")
         # Generación de la partitura PDF
         try:
             pdf_path = convert_midi_to_pdf_with_musescore(midi_path, pdf_output_folder)
