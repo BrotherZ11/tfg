@@ -22,3 +22,16 @@ def transcribe_with_transkun(audio_path, output_dir):
     except subprocess.CalledProcessError as e:
         print(f"Error al ejecutar Transkun: {e}")
         return None
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) < 3:
+        print("Uso: python transkun.py <audio_path> <output_dir>")
+    else:
+        audio = sys.argv[1]
+        output = sys.argv[2]
+        result = transcribe_with_transkun(audio, output)
+        if result:
+            print(f"Archivo MIDI generado: {result}")
+        else:
+            print("Falló la transcripción con Transkun.")

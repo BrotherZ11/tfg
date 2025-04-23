@@ -32,6 +32,19 @@ def transcribe_with_basic_pitch(audio_path, output_dir):
         return midi_path
     else:
         raise RuntimeError("No se pudo generar el archivo MIDI con Basic Pitch.")
+    
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) < 3:
+        print("Uso: python basic_pitch.py <ruta_audio.wav> <directorio_salida>")
+    else:
+        audio = sys.argv[1]
+        output = sys.argv[2]
+        try:
+            midi_file = transcribe_with_basic_pitch(audio, output)
+            print(f"MIDI generado con éxito: {midi_file}")
+        except Exception as e:
+            print(f"Error durante la transcripción: {e}")
 
 #transcribe_with_basic_pitch("protegidos.wav", "./")
 

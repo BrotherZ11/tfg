@@ -77,10 +77,10 @@ def transcribir():
         # Realizar la transcripción según el modelo seleccionado
         try:
             if selected_model == 'onsets_and_frames':
-                from .models.transcribe_v import transcribe_with_onsets_and_frames
+                from .models.onsets_and_frames import transcribe_with_onsets_and_frames
                 midi_path = transcribe_with_onsets_and_frames(wav_path, midi_output_folder)
             elif selected_model == 'basic_pitch':
-                from .models.basic import transcribe_with_basic_pitch
+                from .models.basic_pitch import transcribe_with_basic_pitch
                 midi_path = transcribe_with_basic_pitch(wav_path, midi_output_folder)
             elif selected_model == 'transkun':
                 from .models.transkun import transcribe_with_transkun

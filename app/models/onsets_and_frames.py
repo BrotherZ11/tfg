@@ -112,3 +112,13 @@ def clean_midi(sequence):
             cleaned_sequence.notes.add().CopyFrom(note)
     
     return cleaned_sequence
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) < 3:
+        print("Uso: python onsets_and_frames.py <archivo_wav> <output_dir>")
+    else:
+        wav_file = sys.argv[1]
+        output_dir = sys.argv[2]
+        output_midi = transcribe_with_onsets_and_frames(wav_file, output_dir)
+        print(f"Archivo MIDI generado: {output_midi}")

@@ -2,8 +2,6 @@
 import numpy as np
 import mir_eval
 import pretty_midi
-import librosa
-import librosa.display
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -163,10 +161,10 @@ def plot_pypianoroll_separate(midi_paths, titles, figsize=(20, 6)):
 
 
 # Rutas a los archivos MIDI
-reference_file = 'output/midi/ground_truth/MIDI-Unprocessed_041_PIANO041_MID--AUDIO-split_07-06-17_Piano-e_1-01_wav--1.midi'
-onset_frame_file = 'output/midi/onsets_and_frames/MIDI-Unprocessed_041_PIANO041_MID--AUDIO-split_07-06-17_Piano-e_1-01_wav--1.mid'
-basic_pitch_file = 'output/midi/basic_pitch/MIDI-Unprocessed_041_PIANO041_MID--AUDIO-split_07-06-17_Piano-e_1-01_wav--1_basic_pitch.mid'
-transkun_file = 'output/midi/transkun/MIDI-Unprocessed_041_PIANO041_MID--AUDIO-split_07-06-17_Piano-e_1-01_wav--1_transkun.mid'
+reference_file = 'output/midi/ground_truth/prueba.mid'
+onset_frame_file = 'output/midi/onsets_and_frames/prueba.mid'
+basic_pitch_file = 'output/midi/basic_pitch/prueba.mid'
+transkun_file = 'output/midi/transkun/prueba.mid'
 # Evaluar cada modelo
 # Calcula métricas
 models = {
@@ -220,4 +218,31 @@ plot_pypianoroll_separate(midi_files, titles)
 # plt.legend(title='Metrics', bbox_to_anchor=(1.05, 1), loc='upper left')
 # plt.tight_layout()
 # plt.show()
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) != 5:
+        print("Uso: python evaluate_transcriptions.py <ground_truth.mid> <onsets_and_frames.mid> <basic_pitch.mid> <transkun.mid>")
+    else:
+        reference_file = sys.argv[1]
+        onset_frame_file = sys.argv[2]
+        basic_pitch_file = sys.argv[3]
+        transkun_file = sys.argv[4]
+
+        # Calcula métricas
+        models = {
+            'Onset and Frame': calculate_metrics(reference_file, onset_frame_file),
+            'Basic Pitch': calculate_metrics(reference_file, basic_pitch_file),
+            'Transkun': calculate_metrics(reference_file, transkun_file)
+        }
+
+        # Mostrar métricas
+        df = pd.DataFrame(models).T
+        print(df)
+
+        # Visualización de piano rolls
+        midi_files = [reference_file, onset_frame_file, basic_pitch_file, transkun_file]
+        titles = ["Ground Truth", "Onset and Frame", "Basic Pitch", "Transkun"]
+        plot_pypianoroll_separate(midi_files, titles)
 
