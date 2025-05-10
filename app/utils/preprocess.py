@@ -2,6 +2,8 @@
 from pydub import AudioSegment
 import os
 import sys
+
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 def convert_to_wav(input_audio_path):
     if os.path.exists(input_audio_path):
         sound = AudioSegment.from_mp3(input_audio_path)
@@ -16,7 +18,8 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Uso: python preprocess.py <ruta_del_audio_mp3>")
     else:
-        ruta = sys.argv[1]
+        ruta = os.path.join(ROOT_DIR, sys.argv[1])
+
         try:
             archivo_wav = convert_to_wav(ruta)
             print(f"Archivo convertido a WAV: {archivo_wav}")

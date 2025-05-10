@@ -1,6 +1,8 @@
 import subprocess
 import os
 
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
 def transcribe_with_transkun(audio_path, output_dir):
     """
     Usa Transkun para convertir un archivo de audio a MIDI.
@@ -28,8 +30,8 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Uso: python transkun.py <audio_path> <output_dir>")
     else:
-        audio = sys.argv[1]
-        output = sys.argv[2]
+        audio = os.path.join(ROOT_DIR, sys.argv[1])
+        output = os.path.join(ROOT_DIR, sys.argv[2])
         result = transcribe_with_transkun(audio, output)
         if result:
             print(f"Archivo MIDI generado: {result}")

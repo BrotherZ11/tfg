@@ -14,9 +14,11 @@ from magenta.models.onsets_frames_transcription import train_util
 # Desactivar las características de TensorFlow 2 (ya que usamos TensorFlow 1)
 tf.disable_v2_behavior()
 
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
 def transcribe_with_onsets_and_frames(wav_path, output_dir):
     # Paso 1: Inicialización del modelo MAESTRO y carga del checkpoint
-    checkpoint_dir = './train'  # Asegúrate de que tus checkpoints están aquí
+    checkpoint_dir = os.path.join(ROOT_DIR, 'train')   # Asegúrate de que tus checkpoints están aquí
 
     # Configurar el modelo MAESTRO
     config = configs.CONFIG_MAP['onsets_frames']
@@ -118,7 +120,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Uso: python onsets_and_frames.py <archivo_wav> <output_dir>")
     else:
-        wav_file = sys.argv[1]
-        output_dir = sys.argv[2]
+        wav_file = os.path.join(ROOT_DIR, sys.argv[1])
+        output_dir = os.path.join(ROOT_DIR, sys.argv[2])
         output_midi = transcribe_with_onsets_and_frames(wav_file, output_dir)
         print(f"Archivo MIDI generado: {output_midi}")

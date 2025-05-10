@@ -4,6 +4,8 @@ from basic_pitch import ICASSP_2022_MODEL_PATH
 import os
 
 tf.enable_v2_behavior()
+
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 def transcribe_with_basic_pitch(audio_path, output_dir):
     """
     Transcribe audio to MIDI using Basic Pitch.
@@ -38,8 +40,8 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Uso: python basic_pitch.py <ruta_audio.wav> <directorio_salida>")
     else:
-        audio = sys.argv[1]
-        output = sys.argv[2]
+        audio = os.path.join(ROOT_DIR, sys.argv[1])
+        output = os.path.join(ROOT_DIR, sys.argv[2])
         try:
             midi_file = transcribe_with_basic_pitch(audio, output)
             print(f"MIDI generado con éxito: {midi_file}")

@@ -2,9 +2,11 @@ import yt_dlp
 import os
 import sys
 
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 def download_audio(youtube_url):
     # Directorio de salida
-    output_path = os.path.join('uploads', '%(title)s.%(ext)s')
+    output_path = os.path.join(ROOT_DIR, 'uploads', '%(title)s.%(ext)s')
+
     ydl_opts = {
         'format': 'bestaudio/best',
         'postprocessors': [{

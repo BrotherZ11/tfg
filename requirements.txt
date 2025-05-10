@@ -1,9 +1,9 @@
-magenta
-yt-dlp
-pytube
-ffmpeg-python
-librosa
-spleeter
-midiutil
-music21
+-e ./magenta
+flask
+yt_dlp
+pretty_midi
+mir_eval
+pypianoroll
+basic_pitch
+transkun
 numpy==1.21.6
