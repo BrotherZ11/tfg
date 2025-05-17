@@ -7,7 +7,7 @@ def convert_midi_to_pdf_with_musescore(midi_path, output_dir, musescore_path="C:
     """
     pdf_path = os.path.join(output_dir, os.path.basename(midi_path).replace(".mid", ".pdf"))
     try:
-        # Usa MuseScore para convertir MIDI a PDF
+        # MuseScore para convertir MIDI a PDF
         subprocess.run(
             [musescore_path, midi_path, '-o', pdf_path],
             check=True

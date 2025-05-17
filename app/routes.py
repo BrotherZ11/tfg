@@ -95,6 +95,7 @@ def transcribir():
             return redirect(url_for("main.index"))
 
         flash("Proceso finalizado con éxito", "success")
+        
         # Generación de la partitura PDF
         try:
             pdf_path = convert_midi_to_pdf_with_musescore(midi_path, pdf_output_folder)

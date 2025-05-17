@@ -4,10 +4,11 @@ import mir_eval
 import pretty_midi
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 import pypianoroll
-from pypianoroll import Multitrack, Track
+import os
+import sys
 
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 def load_midi(file_path):
     midi_data = pretty_midi.PrettyMIDI(file_path)
     
@@ -160,89 +161,38 @@ def plot_pypianoroll_separate(midi_paths, titles, figsize=(20, 6)):
 
 
 
-# Rutas a los archivos MIDI
-reference_file = 'output/midi/ground_truth/prueba.mid'
-onset_frame_file = 'output/midi/onsets_and_frames/prueba.mid'
-basic_pitch_file = 'output/midi/basic_pitch/prueba.mid'
-transkun_file = 'output/midi/transkun/prueba.mid'
-# Evaluar cada modelo
-# Calcula métricas
-models = {
-    'Onset and Frame': calculate_metrics(reference_file, onset_frame_file),
-    'Basic Pitch': calculate_metrics(reference_file, basic_pitch_file),
-    'Transkun': calculate_metrics(reference_file, transkun_file)
-}
-
-# Muestra métricas
-import pandas as pd
-df = pd.DataFrame(models).T
-print(df)
-
-# Visualización con pypianoroll
-# Lista de archivos MIDI y títulos
-midi_files = [
-    reference_file,
-    onset_frame_file,
-    basic_pitch_file,
-    transkun_file
-]
-
-titles = [
-    "Ground Truth",
-    "Onset and Frame",
-    "Basic Pitch",
-    "Transkun"
-]
-
-# Llama a la función para visualizar todo
-plot_pypianoroll_separate(midi_files, titles)
-
-
-# Visualización de los resultados
-# ref_pitches, ref_onsets, ref_offsets = load_midi(reference_file)
-# plot_piano_roll(ref_pitches, ref_onsets, ref_offsets, title="Ground Truth")
-
-# for model, midi_file in [('Onset and Frame', onset_frame_file), 
-#                          ('Basic Pitch', basic_pitch_file), 
-#                          ('Transkun', transkun_file)]:
-#     pitches, onsets, offsets = load_midi(midi_file)
-#     plot_piano_roll(pitches, onsets, offsets, title=model)
-
-# metrics = ['Onset Precision', 'Onset Recall', 'Onset F1',
-#                'Offset Precision', 'Offset Recall', 'Offset F1']
-
-# # Gráfico de barras para precisión, recall y F1 en onsets y offsets
-# df[metrics].plot(kind='bar', figsize=(12, 6), title='Onset and Offset Metrics')
-# plt.ylabel('Score')
-# plt.xlabel('Models')
-# plt.legend(title='Metrics', bbox_to_anchor=(1.05, 1), loc='upper left')
-# plt.tight_layout()
-# plt.show()
-
 if __name__ == "__main__":
-    import sys
-
-    if len(sys.argv) != 5:
-        print("Uso: python evaluate_transcriptions.py <ground_truth.mid> <onsets_and_frames.mid> <basic_pitch.mid> <transkun.mid>")
+    # Comprobación de argumentos
+    if len(sys.argv) == 5:
+        reference_file = os.path.join(ROOT_DIR, sys.argv[1])
+        onset_frame_file = os.path.join(ROOT_DIR, sys.argv[2])
+        basic_pitch_file = os.path.join(ROOT_DIR, sys.argv[3])
+        transkun_file = os.path.join(ROOT_DIR, sys.argv[4])
+        print("🔄 Usando archivos proporcionados por el usuario.")
     else:
-        reference_file = sys.argv[1]
-        onset_frame_file = sys.argv[2]
-        basic_pitch_file = sys.argv[3]
-        transkun_file = sys.argv[4]
+        print("ℹ️ No se proporcionaron archivos, usando rutas por defecto.")
+        reference_file = os.path.join(ROOT_DIR, 'output/midi/ground_truth/prueba.mid')
+        onset_frame_file = os.path.join(ROOT_DIR, 'output/midi/onsets_and_frames/prueba.mid')
+        basic_pitch_file = os.path.join(ROOT_DIR, 'output/midi/basic_pitch/prueba.mid')
+        transkun_file = os.path.join(ROOT_DIR, 'output/midi/transkun/prueba.mid')
 
-        # Calcula métricas
-        models = {
-            'Onset and Frame': calculate_metrics(reference_file, onset_frame_file),
-            'Basic Pitch': calculate_metrics(reference_file, basic_pitch_file),
-            'Transkun': calculate_metrics(reference_file, transkun_file)
-        }
+    # Mostrar rutas
+    print("Referencia:        ", reference_file)
+    print("Onset and Frame:   ", onset_frame_file)
+    print("Basic Pitch:       ", basic_pitch_file)
+    print("Transkun:          ", transkun_file)
 
-        # Mostrar métricas
-        df = pd.DataFrame(models).T
-        print(df)
+    # Evaluar
+    models = {
+        'Onset and Frame': calculate_metrics(reference_file, onset_frame_file),
+        'Basic Pitch': calculate_metrics(reference_file, basic_pitch_file),
+        'Transkun': calculate_metrics(reference_file, transkun_file)
+    }
 
-        # Visualización de piano rolls
-        midi_files = [reference_file, onset_frame_file, basic_pitch_file, transkun_file]
-        titles = ["Ground Truth", "Onset and Frame", "Basic Pitch", "Transkun"]
-        plot_pypianoroll_separate(midi_files, titles)
+    df = pd.DataFrame(models).T
+    print("\n📊 Métricas:")
+    print(df)
 
+    midi_files = [reference_file, onset_frame_file, basic_pitch_file, transkun_file]
+    titles = ["Ground Truth", "Onset and Frame", "Basic Pitch", "Transkun"]
+    plot_pypianoroll_separate(midi_files, titles)

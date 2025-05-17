@@ -18,7 +18,7 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 def transcribe_with_onsets_and_frames(wav_path, output_dir):
     # Paso 1: Inicialización del modelo MAESTRO y carga del checkpoint
-    checkpoint_dir = os.path.join(ROOT_DIR, 'train')   # Asegúrate de que tus checkpoints están aquí
+    checkpoint_dir = os.path.join(ROOT_DIR, 'train')  
 
     # Configurar el modelo MAESTRO
     config = configs.CONFIG_MAP['onsets_frames']
@@ -63,7 +63,7 @@ def transcribe_with_onsets_and_frames(wav_path, output_dir):
             allow_empty_notesequence=True
         )
     )
-    assert len(example_list) == 1  # Asegúrate de que solo haya un ejemplo
+    assert len(example_list) == 1 
     to_process = [example_list[0].SerializeToString()]
 
     # Inicializar una sesión de TensorFlow
@@ -88,7 +88,7 @@ def transcribe_with_onsets_and_frames(wav_path, output_dir):
             yield_single_examples=False
         )
     )
-    assert len(prediction_list) == 1  # Solo esperamos una predicción
+    assert len(prediction_list) == 1  
 
     # Convertir la predicción a un NoteSequence (secuencia de notas)
     sequence_prediction = note_seq.NoteSequence.FromString(
@@ -96,6 +96,7 @@ def transcribe_with_onsets_and_frames(wav_path, output_dir):
     )
 
     cleaned_sequence = clean_midi(sequence_prediction)
+    
     # Paso 4: Guardar el archivo MIDI generado
     midi_filename = os.path.join(output_dir, os.path.basename(wav_path).replace(".wav", ".mid"))
     midi_io.sequence_proto_to_midi_file(cleaned_sequence, midi_filename)
