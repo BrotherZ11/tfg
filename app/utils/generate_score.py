@@ -1,18 +1,28 @@
 import subprocess
 import os
+import sys
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
-def convert_midi_to_pdf_with_musescore(midi_path, output_dir, musescore_path="C:/Program Files/MuseScore 4/bin/MuseScore4.exe"):
+from music21 import converter
+
+def generate_score(midi_path, output_path):
     """
-    Convierte un archivo MIDI a PDF usando MuseScore.
+    Convierte un archivo MIDI a MusicXML (formato compatible con MuseScore).
     """
-    pdf_path = os.path.join(output_dir, os.path.basename(midi_path).replace(".mid", ".pdf"))
-    try:
-        # MuseScore para convertir MIDI a PDF
-        subprocess.run(
-            [musescore_path, midi_path, '-o', pdf_path],
-            check=True
-        )
-        return pdf_path
-    except subprocess.CalledProcessError as e:
-        print(f"Error al convertir MIDI a PDF: {e}")
-        return None
+    score = converter.parse(midi_path)
+    score.makeMeasures(inPlace=True)
+    score.splitAtDurations()
+    score.write('musicxml', fp=output_path, makeNotation=True)
+    return output_path
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Uso: python convert_midi_to_musicxml.py <midi_path> <output_dir>")
+    else:
+        audio = os.path.join(ROOT_DIR, sys.argv[1])
+        output = os.path.join(ROOT_DIR, sys.argv[2])
+        result = generate_score(audio, output)
+        if result:
+            print(f"Archivo XML generado: {result}")
+        else:
+            print("Falló la transcripción con Transkun.")
