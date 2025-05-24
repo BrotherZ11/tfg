@@ -10,6 +10,7 @@ main = Blueprint('main', __name__)
 
 # Directorios de archivos
 UPLOAD_FOLDER = 'uploads/'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 OUTPUT_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'output/')
 MIDI_FOLDER = os.path.join(OUTPUT_FOLDER, 'midi/')
 PDF_FOLDER = os.path.join(OUTPUT_FOLDER, 'pdf/')

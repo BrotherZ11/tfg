@@ -87,7 +87,7 @@
         {% endif %}
 
         <!-- Mostrar el PDF si ha sido creado -->
-        {% if pdf_file %}
+        {% if midi_file %} {% if pdf_file %}
         <div class="result">
           <h2>Partitura Generada:</h2>
           <embed
@@ -118,7 +118,7 @@
             PDF.
           </p>
         </div>
-        {% endif %}
+        {% endif %} {% endif %}
       </main>
 
       <footer>
