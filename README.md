@@ -1,4 +1,4 @@
-# 🎓 TFG_24
+# 🎓 TFG
 
 Este es mi proyecto de TFG para el curso 2024/2025.  
 Consiste en un sistema de **transcripción automática de música**, que convierte archivos de audio en formato WAV a archivos MIDI y partituras en PDF, utilizando modelos como **Onsets and Frames**, **Basic Pitch** y **Transkun**.
