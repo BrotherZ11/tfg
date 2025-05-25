@@ -98,6 +98,7 @@ def transcribe_with_onsets_and_frames(wav_path, output_dir):
     cleaned_sequence = clean_midi(sequence_prediction)
     
     # Paso 4: Guardar el archivo MIDI generado
+    
     midi_filename = os.path.join(output_dir, os.path.basename(wav_path).replace(".wav", ".mid"))
     midi_io.sequence_proto_to_midi_file(cleaned_sequence, midi_filename)
 
@@ -123,5 +124,6 @@ if __name__ == "__main__":
     else:
         wav_file = os.path.join(ROOT_DIR, sys.argv[1])
         output_dir = os.path.join(ROOT_DIR, sys.argv[2])
+        os.makedirs(output_dir, exist_ok=True)
         output_midi = transcribe_with_onsets_and_frames(wav_file, output_dir)
         print(f"Archivo MIDI generado: {output_midi}")

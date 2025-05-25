@@ -1,9 +1,9 @@
 import subprocess
 import os
 import sys
-ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-
 from music21 import converter
+
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 def convert_midi_to_pdf_with_musescore(midi_path, output_dir, musescore_path="C:/Program Files/MuseScore 4/bin/MuseScore4.exe"):
     """
@@ -22,6 +22,21 @@ def convert_midi_to_pdf_with_musescore(midi_path, output_dir, musescore_path="C:
         raise RuntimeError("MuseScore no está instalado o no se encuentra en la ruta especificada.")
     except subprocess.CalledProcessError as e:
         raise RuntimeError(f"Error al convertir MIDI a PDF con MuseScore: {e.stderr.decode()}")
+
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print("Uso: python generate_score.py <ruta_midi> <directorio_salida>")
+    else:
+        midi_file = os.path.join(ROOT_DIR, sys.argv[1])
+        output_folder = os.path.join(ROOT_DIR, sys.argv[2])
+        os.makedirs(output_folder, exist_ok=True)
+
+        try:
+            pdf = convert_midi_to_pdf_with_musescore(midi_file, output_folder)
+            print(f"PDF generado con éxito: {pdf}")
+        except Exception as e:
+            print(f"Error: {e}")
+
 
 
 # def generate_score(midi_path, output_path):

@@ -16,7 +16,6 @@ def transcribe_with_transkun(audio_path, output_dir):
     """
     midi_filename = os.path.basename(audio_path).replace(".mp3", ".mid").replace(".wav", ".mid")
     midi_path = os.path.join(output_dir, midi_filename)
-
     try:
         # Ejecutar el comando Transkun
         subprocess.run(["transkun", audio_path, midi_path], check=True)
@@ -31,8 +30,9 @@ if __name__ == "__main__":
         print("Uso: python transkun.py <audio_path> <output_dir>")
     else:
         audio = os.path.join(ROOT_DIR, sys.argv[1])
-        output = os.path.join(ROOT_DIR, sys.argv[2])
-        result = transcribe_with_transkun(audio, output)
+        output_dir = os.path.join(ROOT_DIR, sys.argv[2])
+        os.makedirs(output_dir, exist_ok=True)
+        result = transcribe_with_transkun(audio, output_dir)
         if result:
             print(f"Archivo MIDI generado: {result}")
         else:

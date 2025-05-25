@@ -41,9 +41,10 @@ if __name__ == "__main__":
         print("Uso: python basic_pitch.py <ruta_audio.wav> <directorio_salida>")
     else:
         audio = os.path.join(ROOT_DIR, sys.argv[1])
-        output = os.path.join(ROOT_DIR, sys.argv[2])
+        output_dir = os.path.join(ROOT_DIR, sys.argv[2])
+        os.makedirs(output_dir, exist_ok=True)
         try:
-            midi_file = transcribe_with_basic_pitch(audio, output)
+            midi_file = transcribe_with_basic_pitch(audio, output_dir)
             print(f"MIDI generado con éxito: {midi_file}")
         except Exception as e:
             print(f"Error durante la transcripción: {e}")
