@@ -37,10 +37,10 @@ def plot_waveform_and_spectrogram(audio, sr, title):
 if __name__ == "__main__":
     # Rutas por defecto relativas al ROOT_DIR
     files = {
-        "Referencia": os.path.join(ROOT_DIR, 'output/midi/ground_truth/prueba.mid'),
-        "Onset and Frame": os.path.join(ROOT_DIR, 'output/midi/onsets_and_frames/prueba.mid'),
-        "Basic Pitch": os.path.join(ROOT_DIR, 'output/midi/basic_pitch/prueba.mid'),
-        "Transkun": os.path.join(ROOT_DIR, 'output/midi/transkun/prueba.mid')
+        "Referencia": os.path.join(ROOT_DIR, 'output/midi/ground_truth/test.mid'),
+        "Onset and Frame": os.path.join(ROOT_DIR, 'output/midi/onsets_and_frames/test.mid'),
+        "Basic Pitch": os.path.join(ROOT_DIR, 'output/midi/basic_pitch/test.mid'),
+        "Transkun": os.path.join(ROOT_DIR, 'output/midi/transkun/test.mid')
     }
 
     # Si se pasan 4 argumentos, reemplazamos las rutas

@@ -26,4 +26,4 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"Error: {e}")
 
-#input_audio_path="./data/input/chopin.mp3"
+#input_audio_path="./uploads/test.mp3"

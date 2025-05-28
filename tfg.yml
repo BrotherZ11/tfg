@@ -1,7 +1,9 @@
 name: tfg
 channels:
+  - conda-forge
   - defaults
 dependencies:
   - python=3.8.19=h1aa4202_0
+  - ffmpeg
   - pip:
       - -r requirements.txt

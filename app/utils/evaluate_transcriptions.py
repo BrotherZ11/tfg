@@ -171,10 +171,10 @@ if __name__ == "__main__":
         print("🔄 Usando archivos proporcionados por el usuario.")
     else:
         print("ℹ️ No se proporcionaron archivos, usando rutas por defecto.")
-        reference_file = os.path.join(ROOT_DIR, 'output/midi/ground_truth/prueba.mid')
-        onset_frame_file = os.path.join(ROOT_DIR, 'output/midi/onsets_and_frames/prueba.mid')
-        basic_pitch_file = os.path.join(ROOT_DIR, 'output/midi/basic_pitch/prueba.mid')
-        transkun_file = os.path.join(ROOT_DIR, 'output/midi/transkun/prueba.mid')
+        reference_file = os.path.join(ROOT_DIR, 'output/midi/ground_truth/test.mid')
+        onset_frame_file = os.path.join(ROOT_DIR, 'output/midi/onsets_and_frames/test.mid')
+        basic_pitch_file = os.path.join(ROOT_DIR, 'output/midi/basic_pitch/test.mid')
+        transkun_file = os.path.join(ROOT_DIR, 'output/midi/transkun/test.mid')
 
     # Mostrar rutas
     print("Referencia:        ", reference_file)

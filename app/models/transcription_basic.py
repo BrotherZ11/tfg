@@ -49,6 +49,6 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"Error durante la transcripción: {e}")
 
-#transcribe_with_basic_pitch("protegidos.wav", "./")
+#transcribe_with_basic_pitch("test.wav", "./")
 
 
